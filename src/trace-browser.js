@@ -56,15 +56,22 @@ export async function traceImageInBrowser(imageURL, options = {}) {
     turdsize: clamp(Number(options.speckle ?? 5), 0, 100) * 4,
     alphamax: clamp(Number(options.smoothing ?? .8), 0, 1.3),
     opttolerance: clamp(Number(options.tolerance ?? .15), .05, 1),
-    opticurve: 1, pathonly: true, extractcolors: false,
+    opticurve: 1, pathonly: false, extractcolors: false,
     posterizelevel: 2, posterizationalgorithm: 0
   });
-  // The WASM wrapper splits at every M, including holes. Keep those contours
-  // in one even-odd path so a curl's empty interior is never filled as ink.
-  const outline = traced.filter(d => d.trim()).join(' ');
-  const paths = outline ? [{ d: outline, transform: 'scale(0.5)', fill: true }] : [];
+  // Potrace emits coordinates in tenths of a pixel with a flipped y-axis.
+  // Preserve its group transform and complete compound paths (including holes).
+  const document = new DOMParser().parseFromString(traced, 'image/svg+xml');
+  const paths = [...document.querySelectorAll('path')].map(element => {
+    const transforms = [];
+    for (let node = element; node; node = node.parentElement) {
+      const transform = node.getAttribute('transform');
+      if (transform) transforms.unshift(transform);
+    }
+    return { d: element.getAttribute('d'), transform: `scale(.5) ${transforms.join(' ')}`, fill: true };
+  });
   if (!paths.length) throw new Error('The crop contains only small speckles. Reduce cleanup or crop a larger motif.');
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${trimWidth}" height="${trimHeight}" viewBox="0 0 ${trimWidth} ${trimHeight}">${paths.map(p => `<path d="${p.d}" transform="scale(.5)" fill="black" fill-rule="evenodd"/>`).join('')}</svg>`;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${trimWidth}" height="${trimHeight}" viewBox="0 0 ${trimWidth} ${trimHeight}">${paths.map(p => `<path d="${p.d}" transform="${p.transform}" fill="black" fill-rule="evenodd"/>`).join('')}</svg>`;
   const svgURL = URL.createObjectURL(new Blob([svg], { type: 'image/svg+xml' }));
   const comparison = canvas(trimWidth, trimHeight), comparisonContext = comparison.getContext('2d', { willReadFrequently: true });
   try {
