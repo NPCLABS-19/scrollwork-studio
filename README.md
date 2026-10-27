@@ -55,7 +55,7 @@ npx playwright install chromium
 npm run test:e2e
 ```
 
-`npm run prepare:references` regenerates the archive from the original files in Downloads; the prepared archive is already included, so those original paths are not needed to run the app.
+`npm run prepare:references` regenerates the archive from the bundled images. To substitute originals, pass their paths after `--`: `npm run prepare:references -- catalogue.jpg spindle.jpg`. The prepared archive is already included.
 
 ## Dependencies
 

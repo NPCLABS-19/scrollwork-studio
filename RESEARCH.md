@@ -80,3 +80,7 @@ This advanced fitting and ranking is **not implemented** in this version. A care
 - [Symmetry preference in shapes, faces, flowers and landscapes](https://pubmed.ncbi.nlm.nih.gov/31245176/). Experimental evidence that symmetry preference depends on stimulus category.
 - [Impact of contour on aesthetic judgments and approach-avoidance decisions in architecture](https://doi.org/10.1073/pnas.1301227110). Experimental evidence concerning curvature and beauty judgments, with scope limited to its study conditions.
 - The Metropolitan Museum of Art, [Ironwork](https://resources.metmuseum.org/resources/metpublications/pdf/Ironwork_The_Metropolitan_Museum_of_Art_Bulletin_v_22_no_8_April_1964.pdf). Historical description of scroll shaping, templates, terminal treatment, and assembly.
+
+## Hosted deployment
+
+The GitHub Pages version traces images in the browser using [esm-potrace-wasm](https://github.com/tomayac/esm-potrace-wasm), with Canvas crop/threshold preparation and the same native-resolution overlap comparison. It retains Potrace's compound paths and output coordinate transforms, including the inverted y-axis, before scaling from the 2× mask. Browser tracing keeps images on the visitor's device and makes the hosted app independent of the optional Express/Sharp service. Source and deployed builds are published in the repository's `main` and `gh-pages` branches.
