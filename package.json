@@ -1,0 +1,36 @@
+{
+  "name": "scrollwork-studio",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node server/index.js --dev",
+    "build": "vite build",
+    "start": "node server/index.js",
+    "test": "node --test test/*.test.js",
+    "test:e2e": "node test/browser.mjs",
+    "prepare:references": "node scripts/prepare-references.mjs",
+    "build:pages": "vite build --base=/scrollwork-studio/ --outDir=dist-pages",
+    "deploy": "npm run build:pages && node scripts/deploy-pages.mjs"
+  },
+  "dependencies": {
+    "@fontsource/cormorant-garamond": "^5.3.0",
+    "@fontsource/dm-sans": "^5.3.0",
+    "@vitejs/plugin-react": "latest",
+    "esm-potrace-wasm": "^0.5.1",
+    "express": "^5.1.0",
+    "lucide-react": "latest",
+    "potrace": "2.1.8",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "sharp": "^0.35.5",
+    "vite": "^8.3.5"
+  },
+  "devDependencies": {
+    "@playwright/test": "latest"
+  },
+  "overrides": {
+    "phin": "3.7.1"
+  },
+  "license": "GPL-2.0-only"
+}

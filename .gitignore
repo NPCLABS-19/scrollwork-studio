@@ -1,0 +1,16 @@
+node_modules/
+dist/
+.local/
+test-results/
+dist-pages/
+.impeccable/
+.DS_Store
+**/.DS_Store
+.env
+.env.*
+!.env.example
+*.log
+
+# Local project context and review notes
+PRODUCT.md
+DESIGN.md
